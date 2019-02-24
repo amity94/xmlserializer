@@ -12,8 +12,10 @@ namespace ConsoleApp9
     {
         static void Main(string[] args)
         {
-            Person p1 = new Person("amity","nissimov", 1.83, "maginim 6 street", 44, 5);
-            Console.WriteLine(p1);
+            Person p1 = new Person("amity", "nissimov", 1.83, "maginim 6 street", 44, 5);
+            Person p2 = new Person("lee", "oded", 1.60, "karkur we", 33, 1);
+
+            Person[] persons = { p1, p2 };
 
             XmlSerializer myXmlSerializer = new XmlSerializer(typeof(Person));
 
@@ -27,7 +29,29 @@ namespace ConsoleApp9
                 p1 = myXmlSerializer.Deserialize(file) as Person;
             }
 
-            Console.WriteLine(p1);
+            //Console.WriteLine(p1);
+
+            myXmlSerializer = new XmlSerializer(typeof(Person[]));
+
+            using (Stream file = new FileStream(@"C:\temp\xmlfile2.xml", FileMode.Create))
+            {
+                myXmlSerializer.Serialize(file, persons);
+            }
+
+            using (Stream file = new FileStream(@"C:\temp\xmlfile2.xml", FileMode.Open))
+            {
+                persons = myXmlSerializer.Deserialize(file) as Person[];
+            }
+
+            foreach(var p in persons)
+            Console.WriteLine(p);
+
         }
+
     }
 }
+
+
+
+
+
